@@ -28,3 +28,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
 Start off by clearing out the boiler plate code in the app component. Also initialize the local git repository and add project then push it to the remote project repository on github.  Create the development branch and begin coding. 
+
+Swtiched into the new development branch, merged pull requests and change default branch on github to the dev branch for the development process. 
+
+
