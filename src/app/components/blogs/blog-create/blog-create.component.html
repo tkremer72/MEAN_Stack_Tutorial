@@ -1,0 +1,71 @@
+
+<mat-card>
+
+  <form (submit)="onAddBlog(blogForm)" #blogForm="ngForm">
+
+      <mat-form-field>
+
+    <input
+    matInput
+    type="text"
+    name="title"
+    placeholder="Title"
+    ngModel
+    required
+    minlength="3"
+    >
+
+  </mat-form-field>
+
+ <mat-form-field>
+
+  <textarea
+  matInput
+  rows="6"
+  name="content"
+  placeholder="Content"
+  [value]="newBlog"
+  ngModel
+  required
+  minlength="3"
+  ><!-- {{newBlog}} --></textarea>
+
+</mat-form-field>
+
+<mat-form-field>
+
+  <input
+  matInput
+  type="text"
+  name="author"
+  placeholder="Author"
+  ngModel
+  required
+  minlength="3"
+  >
+
+</mat-form-field>
+
+<mat-form-field>
+
+  <input
+  matInput
+  type="date"
+  name="date"
+  placeholder="Date"
+  ngModel
+  required
+  >
+
+</mat-form-field>
+
+<button color="accent" mat-raised-button typ="submit" (click)="onAddBlog()">Save Post</button>
+
+  </form>
+
+</mat-card>
+
+
+<!-- <p>
+  {{ newBlog }}
+</p> -->

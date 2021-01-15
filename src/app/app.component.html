@@ -1,4 +1,10 @@
-<h1>My MEAN Stack Tutorial!</h1>
+<app-header></app-header>
 
+<main>
+
+  <app-blog-create (blogCreated)="onBlogAdded($event)"></app-blog-create>
+  <app-list-blogs [blogs]="storedBlogs"></app-list-blogs>
+
+</main>
 
 <router-outlet></router-outlet>
