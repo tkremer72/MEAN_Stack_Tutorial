@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/mean-tutorial",
+            "outputPath": "./backend/mean-tutorial",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -124,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "mean-tutorial"
+  "defaultProject": "mean-tutorial",
+  "cli": {
+    "analytics": "3bd0434a-88ec-4d51-8fb2-97f35fbfc711"
+  }
 }
