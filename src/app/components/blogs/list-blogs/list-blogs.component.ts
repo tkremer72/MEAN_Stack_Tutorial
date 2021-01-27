@@ -17,6 +17,7 @@ export class ListBlogsComponent implements OnInit, OnDestroy {
     { id: '5', title: 'Title 5', content: 'This is the content of the blog 5.', author: 'Thomas Kremer', date: Date.now(), imagePath: 'http://bingbingdingding.com', creator: '1' },
   ]; */
 /*   @Input() */
+public isLoading = false;
 public blogs: Blog[] = [];
 private blogsSubs: Subscription | undefined;
 
@@ -25,10 +26,14 @@ private blogsSubs: Subscription | undefined;
   ) { }
 
   ngOnInit() {
+    //Show the loading spinner before doing anything else
+    this.isLoading = true;
     this.blogService.getBlogs();
-    this.blogsSubs = this.blogService.getBlogUpdateListener().subscribe((blogs: Blog[]) => {
+    this.blogsSubs = this.blogService.getBlogUpdateListener()
+    .subscribe((blogs: Blog[]) => {
+      this.isLoading = false;
       this.blogs = blogs;
-    })
+    });
   }
 
   onDelete(blogId: string) {

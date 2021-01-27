@@ -1,76 +1,77 @@
-
 <mat-card>
+  <!-- Show the spinner if isLoading is true -->
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-  <form (submit)="onSaveBlog(blogForm)" #blogForm="ngForm">
+  <!-- Show the spinner if isLoading is false -->
+  <form (submit)="onSaveBlog(blogForm)" #blogForm="ngForm" *ngIf="!isLoading">
 
-      <mat-form-field>
+    <mat-form-field>
 
-    <input
-    matInput
-    type="text"
-    name="title"
-    placeholder="Title"
-    [ngModel]="blog?.title"
-    required
-    minlength="3"
-    #title="ngModel"
->
-<!-- Adding the ? to the ngModel above is called using the elvis operator for angular to load without having a property to start out with? -->
-<mat-error *ngIf="title?.invalid">Please enter a blog title.</mat-error>
+      <input
+      matInput
+      type="text"
+      name="title"
+      placeholder="Title"
+      [ngModel]="blog?.title"
+      required
+      minlength="3"
+        #title="ngModel"
+        >
+      <!-- Adding the ? to the ngModel above is called using the elvis operator for angular to load without having a property to start out with? -->
+      <mat-error *ngIf="title?.invalid">Please enter a blog title.</mat-error>
 
-  </mat-form-field>
+    </mat-form-field>
 
- <mat-form-field>
+    <mat-form-field>
 
-  <textarea
-  matInput
-  rows="6"
-  name="content"
-  placeholder="Content"
-  [ngModel]="blog?.content"
-  required
-  minlength="3"
-  #content="ngModel"
-  ></textarea>
+      <textarea
+      matInput
+      rows="6"
+      name="content"
+      placeholder="Content"
+      [ngModel]="blog?.content"
+      required
+      minlength="3"
+      #content="ngModel"></textarea>
 
-  <mat-error *ngIf="content.invalid">Please enter some blog content.</mat-error>
+      <mat-error *ngIf="content.invalid">Please enter some blog content.</mat-error>
 
-</mat-form-field>
+    </mat-form-field>
 
-<mat-form-field>
+    <mat-form-field>
 
-  <input
-  matInput
-  type="text"
-  name="author"
-  placeholder="Author"
-  [ngModel]="blog?.author"
-  required
-  minlength="3"
-  #author="ngModel"
-  >
+      <input
+      matInput
+      type="text"
+      name="author"
+      placeholder="Author"
+      [ngModel]="blog?.author"
+      required
+      minlength="3"
+      #author="ngModel"
+      >
 
-  <mat-error *ngIf="author.invalid">Please enter an author.</mat-error>
+      <mat-error *ngIf="author.invalid">Please enter an author.</mat-error>
 
-</mat-form-field>
+    </mat-form-field>
 
-<mat-form-field>
+    <mat-form-field>
 
-  <input
-  matInput
-  type="date"
-  name="date"
-  placeholder="Date"
-  [ngModel]="blog?.date"
-  required
-  #date="ngModel"
-  >
+      <input
+      matInput
+      type="date"
+      name="date"
+      placeholder="Date"
+      [ngModel]="blog?.date"
+      required
+      #date="ngModel"
+      >
 
-  <mat-error *ngIf="date.invalid">Please enter the date.</mat-error>
+      <mat-error *ngIf="date.invalid">Please enter the date.</mat-error>
 
-</mat-form-field>
+    </mat-form-field>
 
-<button color="accent" mat-raised-button typ="submit">Save Post</button>
+    <button color="accent" mat-raised-button typ="submit">Save Post</button>
 
   </form>
 

@@ -1,4 +1,9 @@
-<mat-accordion multi="true" *ngIf="blogs.length > 0">
+<!-- Show the spinner if the page is loading -->
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<!-- Show the spinner if the page is done loading -->
+
+<mat-accordion multi="true" *ngIf="blogs.length > 0 && !isLoading">
 
   <mat-expansion-panel *ngFor="let blog of blogs">
 
@@ -20,4 +25,5 @@
   </mat-expansion-panel>
 
 </mat-accordion>
-<p class="info-text mat-body-1" *ngIf="blogs.length <= 0">No blogs have been added yet, please create one. </p>
+
+<p class="info-text mat-body-1" *ngIf="blogs.length <= 0 && !isLoading">No blogs have been added yet, please create one. </p>

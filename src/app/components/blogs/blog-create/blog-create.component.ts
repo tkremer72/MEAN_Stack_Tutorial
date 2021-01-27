@@ -15,6 +15,7 @@ export class BlogCreateComponent implements OnInit {
   public enteredContent = '';
   public enteredAuthor = '';
   public enteredDate = '';
+  public isLoading = false;
 
   private mode = 'create';
   private blogId!: string;
@@ -30,10 +31,14 @@ export class BlogCreateComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      if(paramMap.has('blogId')) {
+      if (paramMap.has('blogId')) {
         this.mode = 'edit';
         this.blogId = paramMap.get('blogId');
+        //Show the spinner
+        this.isLoading = true;
         /* this.blog =  */ this.blogService.getBlog(this.blogId).subscribe(blogData => {
+          //Hide the spinner
+          this.isLoading = false;
           this.blog = {
             id: blogData._id,
             title: blogData.title,
@@ -52,9 +57,9 @@ export class BlogCreateComponent implements OnInit {
   onSaveBlog(
     form: NgForm
     /* blogInput: HTMLTextAreaElement */
-    ) {
+  ) {
     //alert('Blog Added!')
-    if(form.invalid) {
+    if (form.invalid) {
       return;
     }
     /* const blog: Blog = {
@@ -63,12 +68,15 @@ export class BlogCreateComponent implements OnInit {
       author: form.value.author,
       date: form.value.date
     } */
-    if(this.mode === 'create') {
-       this.blogService.addBlog(form.value.title, form.value.content, form.value.author, form.value.date);
+    //Set isLoading to true or show the spinner
+    this.isLoading = true;
+    if (this.mode === 'create') {
+      this.blogService.addBlog(form.value.title, form.value.content, form.value.author, form.value.date);
     } else {
       this.blogService.updateBlog(this.blogId, form.value.title, form.value.content, form.value.author, form.value.date);
     }
     form.resetForm();
     //this.blogCreated.emit(blog);
   }
+  
 }

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class BlogService {
   private blogsUpdated = new Subject<Blog[]>();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
 
@@ -41,14 +43,14 @@ export class BlogService {
   }
 
   getBlog(id: string) {
-   // return {...this.blogs.find(b => b.id === id)};
-   return this.http.get<{
-     _id: string,
-     title: string,
-     content: string,
-     author: string,
-     date: string
-   }>('http://localhost:3000/api/blogs/' + id);
+    // return {...this.blogs.find(b => b.id === id)};
+    return this.http.get<{
+      _id: string,
+      title: string,
+      content: string,
+      author: string,
+      date: string
+    }>('http://localhost:3000/api/blogs/' + id);
   }
 
   addBlog(title: string, content: string, author: string, date: string) {
@@ -66,6 +68,7 @@ export class BlogService {
         blog.id = id;
         this.blogs.push(blog);
         this.blogsUpdated.next([...this.blogs]);
+        this.router.navigate(['/']);
       });
   };
 
@@ -78,14 +81,15 @@ export class BlogService {
       date: date
     };
     this.http.put('http://localhost:3000/api/blogs/' + id, blog)
-    .subscribe(response => {
-      //console.log(response);
-      const updatedBlogs = [...this.blogs];
-      const oldBlogIndex = updatedBlogs.findIndex(b => b.id === blog.id);
-      updatedBlogs[oldBlogIndex] = blog;
-      this.blogs = updatedBlogs;
-      this.blogsUpdated.next([...this.blogs]);
-    });
+      .subscribe(response => {
+        //console.log(response);
+        const updatedBlogs = [...this.blogs];
+        const oldBlogIndex = updatedBlogs.findIndex(b => b.id === blog.id);
+        updatedBlogs[oldBlogIndex] = blog;
+        this.blogs = updatedBlogs;
+        this.blogsUpdated.next([...this.blogs]);
+        this.router.navigate(['/']);
+      });
   }
 
   deleteBlog(blogId: string) {
