@@ -13,7 +13,10 @@
     ngModel
     required
     minlength="3"
-    >
+    #title="ngModel"
+>
+
+<mat-error *ngIf="title.invalid">Please enter a blog title.</mat-error>
 
   </mat-form-field>
 
@@ -24,11 +27,13 @@
   rows="6"
   name="content"
   placeholder="Content"
-  [value]="newBlog"
   ngModel
   required
   minlength="3"
-  ><!-- {{newBlog}} --></textarea>
+  #content="ngModel"
+  ></textarea>
+
+  <mat-error *ngIf="content.invalid">Please enter some blog content.</mat-error>
 
 </mat-form-field>
 
@@ -42,7 +47,10 @@
   ngModel
   required
   minlength="3"
+  #author="ngModel"
   >
+
+  <mat-error *ngIf="author.invalid">Please enter an author.</mat-error>
 
 </mat-form-field>
 
@@ -55,11 +63,14 @@
   placeholder="Date"
   ngModel
   required
+  #date="ngModel"
   >
+
+  <mat-error *ngIf="date.invalid">Please enter the date.</mat-error>
 
 </mat-form-field>
 
-<button color="accent" mat-raised-button typ="submit" (click)="onAddBlog()">Save Post</button>
+<button color="accent" mat-raised-button typ="submit">Save Post</button>
 
   </form>
 

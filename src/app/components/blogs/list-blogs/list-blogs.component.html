@@ -13,7 +13,10 @@
       Author: {{blog.author}} <br>
       Date: {{blog.date | date}}
     </p>
-
+    <mat-action-row>
+      <button mat-button color="primary">EDIT</button>
+      <button mat-button color="warn" (click)="onDelete(blog.id)">DELETE</button>
+    </mat-action-row>
   </mat-expansion-panel>
 
 </mat-accordion>

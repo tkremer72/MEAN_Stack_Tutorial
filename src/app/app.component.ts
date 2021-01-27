@@ -9,13 +9,13 @@ import { Blog } from './shared/models/blog.model';
 export class AppComponent implements OnInit {
 
 
-  storedBlogs: Blog[] = []
+ // storedBlogs: Blog[] = []
 
   constructor() {}
 
   ngOnInit() {
   }
-  onBlogAdded(blog) {
-    this.storedBlogs.push(blog);
-  }
+  // onBlogAdded(blog: any) {
+  //   this.storedBlogs.push(blog);
+  // }
 }

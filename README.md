@@ -87,6 +87,19 @@ Set up the accordion to only render a list of blogs if there are blogs in the da
 I added the rest of the inputs for the blog-create component, included properties for them in the ts file.  Next I will emit an event for when a new blog is added to the database. impor the event emitter and the output from angular, then include a property called blogCreated which will be a new EventEmitter and include it in the property list with the @Ouput() decorator.  Inside of the onAddBlog() method add this.blogCreated.emit(blog);
 Finally I use event binding to listen for the event emitter. I do this in the app-blog-create tag in the app.component.html file.  Create a property inside the app.component.ts file called blogs and set it to an empty array.  Then create an onBlogAdded(blog) {} method within this component ts file 
 
+Create a simple server in the root of the project.  server.js.  Next install the express framework. npm install --save express.  Within the backend folder create an app.js file to hold the express app.  Modify the server.js file with error handling and other checks for listening to the port and exiting gracefully if there is an issue.  Install nodemon package, npm install --save-dev nodemon.
+
+Now the Node.js development environment is set up.  Time to start using the Node.js backend. Add the cors policy manually and automatically within the app.js file before any routes. Install the cors package for the automatic use case, npm install --save cors. Next install the body-parser package so that we can read incoming requests from the frontend or parse them. npm install --save body-parser.
+
+Install mongoose to connect to mongo db. npm install --save mongoose
+
+Add routes for adding a blog, getting blogs, and deleting a blog to the app.js file.  Also add the connection string, the connection method and include the start script to run the app.
+
+Next will be the routing, tomorrow. 
+
+
+
+
 
 
 
