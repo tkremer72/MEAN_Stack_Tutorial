@@ -35,8 +35,20 @@ export class BlogService {
         this.blogsUpdated.next([...this.blogs]);
       })
   }
+
   getBlogUpdateListener() {
     return this.blogsUpdated.asObservable();
+  }
+
+  getBlog(id: string) {
+   // return {...this.blogs.find(b => b.id === id)};
+   return this.http.get<{
+     _id: string,
+     title: string,
+     content: string,
+     author: string,
+     date: string
+   }>('http://localhost:3000/api/blogs/' + id);
   }
 
   addBlog(title: string, content: string, author: string, date: string) {
@@ -56,6 +68,25 @@ export class BlogService {
         this.blogsUpdated.next([...this.blogs]);
       });
   };
+
+  updateBlog(id: string, title: string, content: string, author: string, date: string) {
+    const blog: Blog = {
+      id: id,
+      title: title,
+      content: content,
+      author: author,
+      date: date
+    };
+    this.http.put('http://localhost:3000/api/blogs/' + id, blog)
+    .subscribe(response => {
+      //console.log(response);
+      const updatedBlogs = [...this.blogs];
+      const oldBlogIndex = updatedBlogs.findIndex(b => b.id === blog.id);
+      updatedBlogs[oldBlogIndex] = blog;
+      this.blogs = updatedBlogs;
+      this.blogsUpdated.next([...this.blogs]);
+    });
+  }
 
   deleteBlog(blogId: string) {
     this.http.delete('http://localhost:3000/api/blogs/' + blogId)

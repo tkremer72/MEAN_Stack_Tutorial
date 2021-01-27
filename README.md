@@ -95,7 +95,14 @@ Install mongoose to connect to mongo db. npm install --save mongoose
 
 Add routes for adding a blog, getting blogs, and deleting a blog to the app.js file.  Also add the connection string, the connection method and include the start script to run the app.
 
-Next will be the routing, tomorrow. 
+Next will be the routing, tomorrow. If you did not choose to include angular routing, you will need to add the app-routing.module.ts file.  I did include this so I will need to set up route paths to all of the components. 
+
+At this point I turned off the typescript strict null checks property in the tsconfig.json file.  under compiler options added "strictNullChecks": false
+
+Time to Re-Organize the backend routes.  Create controllers, routes etc.  Also adding loading spinners. 
+
+
+
 
 
 

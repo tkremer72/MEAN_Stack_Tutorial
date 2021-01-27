@@ -1,7 +1,7 @@
 
 <mat-card>
 
-  <form (submit)="onAddBlog(blogForm)" #blogForm="ngForm">
+  <form (submit)="onSaveBlog(blogForm)" #blogForm="ngForm">
 
       <mat-form-field>
 
@@ -10,13 +10,13 @@
     type="text"
     name="title"
     placeholder="Title"
-    ngModel
+    [ngModel]="blog?.title"
     required
     minlength="3"
     #title="ngModel"
 >
-
-<mat-error *ngIf="title.invalid">Please enter a blog title.</mat-error>
+<!-- Adding the ? to the ngModel above is called using the elvis operator for angular to load without having a property to start out with? -->
+<mat-error *ngIf="title?.invalid">Please enter a blog title.</mat-error>
 
   </mat-form-field>
 
@@ -27,7 +27,7 @@
   rows="6"
   name="content"
   placeholder="Content"
-  ngModel
+  [ngModel]="blog?.content"
   required
   minlength="3"
   #content="ngModel"
@@ -44,7 +44,7 @@
   type="text"
   name="author"
   placeholder="Author"
-  ngModel
+  [ngModel]="blog?.author"
   required
   minlength="3"
   #author="ngModel"
@@ -61,7 +61,7 @@
   type="date"
   name="date"
   placeholder="Date"
-  ngModel
+  [ngModel]="blog?.date"
   required
   #date="ngModel"
   >
