@@ -110,6 +110,22 @@ Setup the backend to get images in the route, store them on the backend, and dis
 
 Time to implement pagination.  Add the paginator to the list blogs component html file, add properties for legth, pageSize, and for pageSizeOptions to the paginator, and to the list blogs component ts file.  Include the query params in the get blogs method in the list blogs ts file, the blog service file and on the get blogs controller in the backend.  Look at code to see this in action or implemented.  Next we need to fetch the blogs correctly so that the total number of blogs updates in the paginator, we also need to change the pagecount when blogs are removed or added. 
 
+Time to add the user into the application equation.  While I would have done this step first and implemented all the above into the users for an administrative user, I will attempt this now by following the steps in the tutorial.
+
+First he creates an auth folder with the login and signup components and their files.  I have already done this with the CLI and my folders are user-login and user-registration.  While the author of the tutorial is creating all of his files and components manually, I have used the CLI except for the mime-type.validator.ts file which I just downloaded and copied in.
+
+Create the user login form in the user-login html file.  Edit the stylesheet for the user login component, add new links to the header component html file for the registration and login.  style the header by adding display flex to the ul element. Once done with that do the same for the user-registration page. The way this is set up is to be very explicit, you could merge some of the forms and have a shared component that links them with the selectors. 
+
+Create a user model, include the property for the image just in case I decide to include an image for the user.
+
+install mongoose-unique-validator so that you can validate the user email by being unique. npm install --save mongoose-unique-validator, once the model is completed I will need to install a couple of other packages, one is the jsonwebtoken package, one is the bcryptjs package.  The tutorial uses just the bcrypt package but toward the end of the tutorial because of errors thrown changes it to the bcryptjs package so I will just do that to start with.  
+npm install --save jsonwebtoken
+npm install --save bcryptjs 
+or you can just install them together npm install --save jsonwebtoken bcryptjs
+
+implementing protected routes so that only authenticated users can go to certain things.  Also attaching the token to requests, improving the header to verify authentication. 
+
+
 
 
 

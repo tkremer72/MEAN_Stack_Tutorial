@@ -1,4 +1,6 @@
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-user-registration',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserRegistrationComponent implements OnInit {
 
-  constructor() { }
+  public isLoading = false;
 
-  ngOnInit(): void {
+  constructor(
+    private authService: AuthService
+  ) { }
+
+  ngOnInit() {
+  }
+
+  onRegister(form: NgForm) {
+    // console.log(form.value);
+    if(form.invalid) {
+      return;
+    }
+    this.authService.registerUser(form.value.user_email, form.value.user_password)
   }
 
 }

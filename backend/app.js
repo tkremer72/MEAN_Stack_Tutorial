@@ -47,6 +47,8 @@ app.use((req, res, next) => {
 app.use(cors());
 
 app.use('/api/blogs', blogRoutes);
+app.use('/api/auths', authRoutes);
+app.use('/api/users', userRoutes);
 
 //app.post();
 
