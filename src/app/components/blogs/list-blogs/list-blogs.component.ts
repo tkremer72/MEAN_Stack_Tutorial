@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { BlogService } from 'src/app/shared/services/blog.service';
 import { Blog } from '../../../shared/models/blog.model';
 import { Subscription } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list-blogs',
@@ -19,6 +20,12 @@ export class ListBlogsComponent implements OnInit, OnDestroy {
 /*   @Input() */
 public isLoading = false;
 public blogs: Blog[] = [];
+
+public totalBlogs = 0;
+public blogsPerPage = 2;
+public currentPage = 1;
+public pageSizeOptions = [1, 2, 5, 10];
+
 private blogsSubs: Subscription | undefined;
 
   constructor(
@@ -28,17 +35,31 @@ private blogsSubs: Subscription | undefined;
   ngOnInit() {
     //Show the loading spinner before doing anything else
     this.isLoading = true;
-    this.blogService.getBlogs();
+    this.blogService.getBlogs(this.blogsPerPage, this.currentPage);
     this.blogsSubs = this.blogService.getBlogUpdateListener()
-    .subscribe((blogs: Blog[]) => {
+    .subscribe((blogData: { blogs: Blog[], blogCount: number }) => {
       this.isLoading = false;
-      this.blogs = blogs;
+      this.totalBlogs = blogData.blogCount;
+      this.blogs = blogData.blogs;
     });
   }
 
-  onDelete(blogId: string) {
-    this.blogService.deleteBlog(blogId);
+  onChangedPage(pageData: PageEvent) {
+    //console.log(pageData);
+    //show the spinner when the page is changed.
+    this.isLoading = true;
+    this.currentPage = pageData.pageIndex + 1;
+    this.blogsPerPage = pageData.pageSize;
+    this.blogService.getBlogs(this.blogsPerPage, this.currentPage);
   }
+
+  onDelete(blogId: string) {
+    this.isLoading = true;
+    this.blogService.deleteBlog(blogId).subscribe(() => {
+      this.blogService.getBlogs(this.blogsPerPage, this.currentPage);
+    });
+  }
+
   ngOnDestroy() {
     this.blogsSubs?.unsubscribe();
   }

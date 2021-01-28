@@ -1,3 +1,5 @@
+//Bring in the path package to allow access to files and folders
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -25,6 +27,8 @@ mongoose.connect(
 //use the body parser before incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+//Allow access to the backend images folder
+app.use("/images", express.static(path.join("backend/images")));
 
 //Setting the CORS policy manually
 app.use((req, res, next) => {

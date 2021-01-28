@@ -101,6 +101,18 @@ At this point I turned off the typescript strict null checks property in the tsc
 
 Time to Re-Organize the backend routes.  Create controllers, routes etc.  Also adding loading spinners. 
 
+The next step will be adding image uploads to the blogs. Switch to reactive forms approach and add a custom validator for selecting files. This will disable ngModel when I remove the FormsModule.  I will also remove all references to the ngModel in my blogcreate component. 
+
+Time to add the image controls to the form. Next add the image preview. Once the image preview is set up, time to validate that there is an image. Install multer so that I can implement file uploading.
+npm install --save multer
+
+Setup the backend to get images in the route, store them on the backend, and display them on the frontend. 
+
+Time to implement pagination.  Add the paginator to the list blogs component html file, add properties for legth, pageSize, and for pageSizeOptions to the paginator, and to the list blogs component ts file.  Include the query params in the get blogs method in the list blogs ts file, the blog service file and on the get blogs controller in the backend.  Look at code to see this in action or implemented.  Next we need to fetch the blogs correctly so that the total number of blogs updates in the paginator, we also need to change the pagecount when blogs are removed or added. 
+
+
+
+
 
 
 

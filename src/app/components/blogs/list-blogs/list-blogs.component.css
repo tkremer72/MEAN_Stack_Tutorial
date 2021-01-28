@@ -2,9 +2,27 @@
   display: block;
   margin-top: 1rem;
 }
+.blog-image {
+  text-align: center;
+  width: 100%;
+  height: auto;
+}
+.blog-image img {
+  width: 50%;
+  height: auto;
+  box-shadow: 1px 1px 5px rgb(0, 0, 0, 0.5);
+  text-align: center;
+}
 .info-text {
   text-align: center;
+}
+mat-expansion-panel {
+  text-align: center;
+}
+mat-paginator {
+  margin-top: 1rem;
 }
 mat-spinner {
   margin: auto;
 }
+

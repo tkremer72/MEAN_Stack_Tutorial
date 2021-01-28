@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class BlogService {
   private blogs: Blog[] = [];
 
-  private blogsUpdated = new Subject<Blog[]>();
+  private blogsUpdated = new Subject<{ blogs: Blog[], blogCount: number }>();
 
   constructor(
     private http: HttpClient,
@@ -19,22 +19,27 @@ export class BlogService {
   ) { }
 
 
-  getBlogs() {
-    this.http.get<{ message: string, blogs: any }>('http://localhost:3000/api/blogs')
+  getBlogs(blogsPerPage: number, currentPage: number) {
+    const queryParams = `?pagesize=${blogsPerPage}&page=${currentPage}`
+    this.http.get<{ message: string, blogs: any, maxBlogs: number }>('http://localhost:3000/api/blogs' + queryParams)
       .pipe(map((blogData) => {
-        return blogData.blogs.map((blog: { _id: any; title: any; content: any; author: any; date: any; }) => {
-          return {
-            id: blog._id,
-            title: blog.title,
-            content: blog.content,
-            author: blog.author,
-            date: blog.date
-          };
-        });
-      }))
-      .subscribe(transformedBlogs => {
-        this.blogs = transformedBlogs;
-        this.blogsUpdated.next([...this.blogs]);
+        return {
+          blogs: blogData.blogs.map((blog: { _id: any; title: any; content: any; author: any; date: any; imagePath: any; }) => {
+            return {
+              id: blog._id,
+              title: blog.title,
+              content: blog.content,
+              author: blog.author,
+              date: blog.date,
+              imagePath: blog.imagePath
+            };
+          }), maxBlogs: blogData.maxBlogs
+        };
+      })
+      )
+      .subscribe(transformedBlogData => {
+        this.blogs = transformedBlogData.blogs;
+        this.blogsUpdated.next({ blogs: [...this.blogs], blogCount: transformedBlogData.maxBlogs });
       })
   }
 
@@ -49,56 +54,100 @@ export class BlogService {
       title: string,
       content: string,
       author: string,
-      date: string
+      date: string,
+      imagePath: string
     }>('http://localhost:3000/api/blogs/' + id);
   }
 
-  addBlog(title: string, content: string, author: string, date: string) {
-    const blog: Blog = {
-      id: '',
-      title: title,
-      content: content,
-      author: author,
-      date: date
-    };
-    this.http.post<{ message: string, blogId: string }>('http://localhost:3000/api/blogs', blog)
+  addBlog(title: string, content: string, author: string, date: string, image: File) {
+    // const blog: Blog = {
+    //   id: '',
+    //   title: title,
+    //   content: content,
+    //   author: author,
+    //   date: date
+    // };
+    const blogData = new FormData();
+    blogData.append("title", title);
+    blogData.append("content", content);
+    blogData.append("author", author);
+    blogData.append("date", date);
+    blogData.append("image", image, title);
+    this.http.post<{ message: string, blog: Blog }>('http://localhost:3000/api/blogs', blogData)
       .subscribe(responseData => {
         //console.log(responseData.message);
-        const id = responseData.blogId;
-        blog.id = id;
-        this.blogs.push(blog);
-        this.blogsUpdated.next([...this.blogs]);
+        // const blog: Blog = {
+        //   id: responseData.blog.id,
+        //   title: title,
+        //   content: content,
+        //   author: author,
+        //   date: date,
+        //   imagePath: responseData.blog.imagePath
+        // }
+        // // const id = responseData.blogId;
+        // // blog.id = id;
+        // this.blogs.push(blog);
+        // this.blogsUpdated.next([...this.blogs]);
         this.router.navigate(['/']);
       });
   };
 
-  updateBlog(id: string, title: string, content: string, author: string, date: string) {
-    const blog: Blog = {
-      id: id,
-      title: title,
-      content: content,
-      author: author,
-      date: date
-    };
-    this.http.put('http://localhost:3000/api/blogs/' + id, blog)
+  updateBlog(id: string, title: string, content: string, author: string, date: string, image: File | string) {
+    // const blog: Blog = {
+    //   id: id,
+    //   title: title,
+    //   content: content,
+    //   author: author,
+    //   date: date,
+    //   imagePath: null
+    // };
+    let blogData: Blog | FormData;
+
+    if (typeof (image) === 'object') {
+      blogData = new FormData();
+      blogData.append('id', id);
+      blogData.append('title', title);
+      blogData.append('content', content);
+      blogData.append('author', author);
+      blogData.append('date', date);
+      blogData.append('image', image, title)
+    } else {
+      blogData = {
+        id: id,
+        title: title,
+        content: content,
+        author: author,
+        date: date,
+        imagePath: image
+      }
+    }
+    this.http.put('http://localhost:3000/api/blogs/' + id, blogData)
       .subscribe(response => {
         //console.log(response);
-        const updatedBlogs = [...this.blogs];
-        const oldBlogIndex = updatedBlogs.findIndex(b => b.id === blog.id);
-        updatedBlogs[oldBlogIndex] = blog;
-        this.blogs = updatedBlogs;
-        this.blogsUpdated.next([...this.blogs]);
+        // const updatedBlogs = [...this.blogs];
+        // const oldBlogIndex = updatedBlogs.findIndex(b => b.id === id);
+        // const blog: Blog = {
+        //   id: id,
+        //   title: title,
+        //   content: content,
+        //   author: author,
+        //   date: date,
+        //   imagePath: ""
+        // }
+        // updatedBlogs[oldBlogIndex] = blog;
+        // this.blogs = updatedBlogs;
+        // this.blogsUpdated.next([...this.blogs]);
         this.router.navigate(['/']);
       });
   }
 
   deleteBlog(blogId: string) {
-    this.http.delete('http://localhost:3000/api/blogs/' + blogId)
-      .subscribe(() => {
-        //console.log("Deleted!")
-        const updatedBlogs = this.blogs.filter(blog => blog.id !== blogId);
-        this.blogs = updatedBlogs;
-        this.blogsUpdated.next([...this.blogs])
-      });
+   return this.http.delete('http://localhost:3000/api/blogs/' + blogId);
+      // .subscribe(() => {
+      //   //console.log("Deleted!")
+      //   const updatedBlogs = this.blogs.filter(blog => blog.id !== blogId);
+      //   this.blogs = updatedBlogs;
+      //   this.blogsUpdated.next([...this.blogs])
+      // });
   }
 }

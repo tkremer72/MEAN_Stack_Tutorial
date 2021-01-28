@@ -4,4 +4,5 @@ export interface Blog {
   content?: string;
   author?: string;
   date?: string;
+  imagePath?: string;
 }

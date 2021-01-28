@@ -1,8 +1,9 @@
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Blog } from '../../../shared/models/blog.model';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BlogService } from 'src/app/shared/services/blog.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { mimeType } from '../../../shared/models/mime-type.validator';
 
 @Component({
   selector: 'app-blog-create',
@@ -16,6 +17,8 @@ export class BlogCreateComponent implements OnInit {
   public enteredAuthor = '';
   public enteredDate = '';
   public isLoading = false;
+  public form: FormGroup;
+  public imagePreview: string;
 
   private mode = 'create';
   private blogId!: string;
@@ -30,6 +33,19 @@ export class BlogCreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.form = new FormGroup({
+      'title': new FormControl(null,
+        { validators: [ Validators.required, Validators.minLength(3) ] }),
+      'content': new FormControl(null,
+        { validators: [ Validators.required, Validators.minLength(3) ]}),
+      'author': new FormControl(null,
+        { validators: [ Validators.required, Validators.minLength(3) ]}),
+      'date': new FormControl(null,
+        { validators: [ Validators.required, Validators.minLength(3) ]}),
+      'image': new FormControl(null,
+        { validators: [ Validators.required ], asyncValidators: [mimeType]})
+    });
+
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('blogId')) {
         this.mode = 'edit';
@@ -44,8 +60,16 @@ export class BlogCreateComponent implements OnInit {
             title: blogData.title,
             content: blogData.content,
             author: blogData.author,
-            date: blogData.date
-          }
+            date: blogData.date,
+            imagePath: blogData.imagePath
+          };
+          this.form.setValue({
+            'title': this.blog.title,
+            'content': this.blog.content,
+            'author': this.blog.author,
+            'date': this.blog.date,
+            'image': this.blog.imagePath
+          });
         });
       } else {
         this.mode = 'create';
@@ -54,12 +78,26 @@ export class BlogCreateComponent implements OnInit {
     });
   }
 
+  onPickedImage(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({ image: file });
+    this.form.get('image').updateValueAndValidity();
+    // console.log(file);
+    // console.log(this.form);
+    //convert the image to a data url
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
   onSaveBlog(
-    form: NgForm
+    //form: NgForm
     /* blogInput: HTMLTextAreaElement */
   ) {
     //alert('Blog Added!')
-    if (form.invalid) {
+    if (this.form.invalid) {
       return;
     }
     /* const blog: Blog = {
@@ -71,12 +109,26 @@ export class BlogCreateComponent implements OnInit {
     //Set isLoading to true or show the spinner
     this.isLoading = true;
     if (this.mode === 'create') {
-      this.blogService.addBlog(form.value.title, form.value.content, form.value.author, form.value.date);
+      this.blogService.addBlog(
+        this.form.value.title,
+        this.form.value.content,
+        this.form.value.author,
+        this.form.value.date,
+        this.form.value.image
+        );
     } else {
-      this.blogService.updateBlog(this.blogId, form.value.title, form.value.content, form.value.author, form.value.date);
+      this.blogService.updateBlog(
+        this.blogId,
+        this.form.value.title,
+        this.form.value.content,
+        this.form.value.author,
+        this.form.value.date,
+        this.form.value.image
+        );
     }
-    form.resetForm();
-    //this.blogCreated.emit(blog);
+    //this.resetForm();
+        this.form.reset();
+//this.blogCreated.emit(blog);
   }
-  
+
 }
