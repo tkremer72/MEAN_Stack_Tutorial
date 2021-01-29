@@ -1,16 +1,18 @@
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Blog } from '../../../shared/models/blog.model';
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BlogService } from 'src/app/shared/services/blog.service';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { mimeType } from '../../../shared/models/mime-type.validator';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-blog-create',
   templateUrl: './blog-create.component.html',
   styleUrls: ['./blog-create.component.css']
 })
-export class BlogCreateComponent implements OnInit {
+export class BlogCreateComponent implements OnInit, OnDestroy {
 
   public enteredTitle = '';
   public enteredContent = '';
@@ -25,14 +27,21 @@ export class BlogCreateComponent implements OnInit {
 
   public blog!: Blog;
 
+  private authStatusSubs: Subscription;
+
   //@Output() blogCreated = new EventEmitter<Blog>();
 
   constructor(
+    private authService: AuthService,
     public blogService: BlogService,
     public route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.authStatusSubs = this.authService.getAuthStatusListener()
+    .subscribe(authStatus => {
+      this.isLoading = false;
+    });
     this.form = new FormGroup({
       'title': new FormControl(null,
         { validators: [ Validators.required, Validators.minLength(3) ] }),
@@ -61,7 +70,8 @@ export class BlogCreateComponent implements OnInit {
             content: blogData.content,
             author: blogData.author,
             date: blogData.date,
-            imagePath: blogData.imagePath
+            imagePath: blogData.imagePath,
+            creator: blogData.creator
           };
           this.form.setValue({
             'title': this.blog.title,
@@ -123,12 +133,16 @@ export class BlogCreateComponent implements OnInit {
         this.form.value.content,
         this.form.value.author,
         this.form.value.date,
-        this.form.value.image
+        this.form.value.image,
+        this.form.value.creator
         );
     }
     //this.resetForm();
         this.form.reset();
 //this.blogCreated.emit(blog);
   }
-
+  
+  ngOnDestroy() {
+    this.authStatusSubs.unsubscribe();
+  }
 }

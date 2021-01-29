@@ -1,3 +1,5 @@
+import { AuthGuard } from './shared/guards/auth.guard';
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -13,15 +15,16 @@ const routes: Routes = [
   { path: '', component: ListBlogsComponent },
   { path: 'users-login', component: UserLoginComponent },
   { path: 'users-registration', component: UserRegistrationComponent },
-  { path: 'create-blog', component: BlogCreateComponent },
-  { path: 'edit-blog/:blogId', component: BlogCreateComponent },
-  { path: 'admin-list-users', component: ListUsersComponent },
-  { path: 'users-profile', component: UserProfileComponent },
-  { path: 'update-user/:userId', component: UpdateUserComponent }
+  { path: 'create-blog', component: BlogCreateComponent, canActivate: [ AuthGuard ] },
+  { path: 'edit-blog/:blogId', component: BlogCreateComponent, canActivate: [ AuthGuard ] },
+  { path: 'admin-list-users', component: ListUsersComponent, canActivate: [ AuthGuard ] },
+  { path: 'users-profile', component: UserProfileComponent, canActivate: [ AuthGuard ] },
+  { path: 'update-user/:userId', component: UpdateUserComponent, canActivate: [ AuthGuard ] }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }

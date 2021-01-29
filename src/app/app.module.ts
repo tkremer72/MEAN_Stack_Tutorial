@@ -1,9 +1,12 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+
+//Bring in the custom interceptors
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 
 //Include all the angular material imports needed for this project
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -69,7 +72,19 @@ import { UpdateUserComponent } from './components/users/update-user/update-user.
     MatToolbarModule
 
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ErrorInterceptor,
+    multi: true
+  }
+],
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }

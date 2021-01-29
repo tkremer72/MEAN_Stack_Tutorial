@@ -123,7 +123,17 @@ npm install --save jsonwebtoken
 npm install --save bcryptjs 
 or you can just install them together npm install --save jsonwebtoken bcryptjs
 
-implementing protected routes so that only authenticated users can go to certain things.  Also attaching the token to requests, improving the header to verify authentication. 
+implementing protected routes so that only authenticated users can go to certain things.  Also attaching the token to requests, improving the header to verify authentication.  Create an auth interceptor to attach the token to requests.  Include the Authorization header in the cors policies.  Test to see if the authentication is working. 
+
+Improving the UI to reflect Authentication Status. Show and hide elements based on the user being logged in or out, add the loading spinner to the login component and the registration component.  Hide the buttons if the page is loading, show the spinner instead and vice versa.
+I will add a route guard next. Reflecting the token expiration in the UI and saving the token in local storage. Connect the user to the blogs by that user and eventually do the same to the user information. 
+
+Protecting the resources with authorization. Added the userData I want to use in the application to the decodedToken property within the verify.js file to check authentication. Restrict who can edit and delete a blog by checking if the user is the creator or not to show the buttons.
+Handling errors. stop the loading spinner when an error occurs and redirect the user.  Add a global error interceptor to handle errors globally. Adding error dialog and returning error messages on the server. 
+
+
+
+
 
 
 

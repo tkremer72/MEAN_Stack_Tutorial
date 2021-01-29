@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { BlogService } from 'src/app/shared/services/blog.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { Blog } from '../../../shared/models/blog.model';
-import { Subscription } from 'rxjs';
+import { BlogService } from 'src/app/shared/services/blog.service';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list-blogs',
@@ -22,25 +23,36 @@ public isLoading = false;
 public blogs: Blog[] = [];
 
 public totalBlogs = 0;
-public blogsPerPage = 2;
+public blogsPerPage = 3;
 public currentPage = 1;
-public pageSizeOptions = [1, 2, 5, 10];
+public pageSizeOptions = [1, 3, 5, 10, 25];
+public userIsAuthenticated = false;
+public userId: string;
 
-private blogsSubs: Subscription | undefined;
+private blogsSubs: Subscription;
+private authStatusSubs: Subscription;
 
   constructor(
+    private authService: AuthService,
     public blogService: BlogService
   ) { }
 
   ngOnInit() {
     //Show the loading spinner before doing anything else
     this.isLoading = true;
-    this.blogService.getBlogs(this.blogsPerPage, this.currentPage);
+    this.blogService.getAllBlogs(this.blogsPerPage, this.currentPage);
+    this.userId = this.authService.getUserId();
     this.blogsSubs = this.blogService.getBlogUpdateListener()
     .subscribe((blogData: { blogs: Blog[], blogCount: number }) => {
       this.isLoading = false;
       this.totalBlogs = blogData.blogCount;
       this.blogs = blogData.blogs;
+    });
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authStatusSubs = this.authService.getAuthStatusListener()
+    .subscribe(isAuthenticated => {
+      this.userIsAuthenticated = isAuthenticated;
+      this.userId = this.authService.getUserId();
     });
   }
 
@@ -50,17 +62,20 @@ private blogsSubs: Subscription | undefined;
     this.isLoading = true;
     this.currentPage = pageData.pageIndex + 1;
     this.blogsPerPage = pageData.pageSize;
-    this.blogService.getBlogs(this.blogsPerPage, this.currentPage);
+    this.blogService.getAllBlogs(this.blogsPerPage, this.currentPage);
   }
 
   onDelete(blogId: string) {
     this.isLoading = true;
     this.blogService.deleteBlog(blogId).subscribe(() => {
-      this.blogService.getBlogs(this.blogsPerPage, this.currentPage);
+      this.blogService.getAllBlogs(this.blogsPerPage, this.currentPage);
+    }, () => {
+      this.isLoading = false;
     });
   }
 
   ngOnDestroy() {
-    this.blogsSubs?.unsubscribe();
+    this.authStatusSubs.unsubscribe();
+    this.blogsSubs.unsubscribe();
   }
 }

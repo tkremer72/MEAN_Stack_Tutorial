@@ -18,30 +18,61 @@ export class BlogService {
     private router: Router
   ) { }
 
+//Get all of the blogs in the database
 
-  getBlogs(blogsPerPage: number, currentPage: number) {
+  getAllBlogs(blogsPerPage: number, currentPage: number) {
     const queryParams = `?pagesize=${blogsPerPage}&page=${currentPage}`
     this.http.get<{ message: string, blogs: any, maxBlogs: number }>('http://localhost:3000/api/blogs' + queryParams)
       .pipe(map((blogData) => {
         return {
-          blogs: blogData.blogs.map((blog: { _id: any; title: any; content: any; author: any; date: any; imagePath: any; }) => {
+          blogs: blogData.blogs.map((blog: { _id: any; title: any; content: any; author: any; date: any; imagePath: any; creator: any}) => {
             return {
               id: blog._id,
               title: blog.title,
               content: blog.content,
               author: blog.author,
               date: blog.date,
-              imagePath: blog.imagePath
+              imagePath: blog.imagePath,
+              creator: blog.creator
             };
           }), maxBlogs: blogData.maxBlogs
         };
       })
       )
       .subscribe(transformedBlogData => {
+        //console.log(transformedBlogData);
         this.blogs = transformedBlogData.blogs;
         this.blogsUpdated.next({ blogs: [...this.blogs], blogCount: transformedBlogData.maxBlogs });
       })
   }
+//Get all of the blogs by the user that is logged in
+// getUsersBlogs(blogsPerPage: number, currentPage: number) {
+//   const queryParams = `?pagesize=${blogsPerPage}&page=${currentPage}`
+//   this.http.get<{ message: string, blogs: any, maxBlogs: number }>(
+//     'http://localhost:3000/api/blogs/users-blogs' + queryParams
+//     )
+//     .pipe(map((blogData) => {
+//       return {
+//         blogs: blogData.blogs.map((blog: { _id: any; title: any; content: any; author: any; date: any; imagePath: any; creator: any}) => {
+//           return {
+//             id: blog._id,
+//             title: blog.title,
+//             content: blog.content,
+//             author: blog.author,
+//             date: blog.date,
+//             imagePath: blog.imagePath,
+//             creator: blog.creator
+//           };
+//         }), maxBlogs: blogData.maxBlogs
+//       };
+//     })
+//     )
+//     .subscribe(transformedBlogData => {
+//       //console.log(transformedBlogData);
+//       this.blogs = transformedBlogData.blogs;
+//       this.blogsUpdated.next({ blogs: [...this.blogs], blogCount: transformedBlogData.maxBlogs });
+//     })
+// }
 
   getBlogUpdateListener() {
     return this.blogsUpdated.asObservable();
@@ -55,7 +86,8 @@ export class BlogService {
       content: string,
       author: string,
       date: string,
-      imagePath: string
+      imagePath: string,
+      creator: string
     }>('http://localhost:3000/api/blogs/' + id);
   }
 
@@ -92,7 +124,7 @@ export class BlogService {
       });
   };
 
-  updateBlog(id: string, title: string, content: string, author: string, date: string, image: File | string) {
+  updateBlog(id: string, title: string, content: string, author: string, date: string, image: File | string, creator: string) {
     // const blog: Blog = {
     //   id: id,
     //   title: title,
@@ -118,7 +150,8 @@ export class BlogService {
         content: content,
         author: author,
         date: date,
-        imagePath: image
+        imagePath: image,
+        creator: null
       }
     }
     this.http.put('http://localhost:3000/api/blogs/' + id, blogData)

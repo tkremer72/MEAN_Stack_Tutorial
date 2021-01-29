@@ -5,4 +5,5 @@ export interface Blog {
   author?: string;
   date?: string;
   imagePath?: string;
+  creator: string;
 }

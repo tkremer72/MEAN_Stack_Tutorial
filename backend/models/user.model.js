@@ -12,7 +12,8 @@ const userSchema = mongoose.Schema({
   user_phone: { type: String, required: true },
   user_mobile: { type: String, required: true },
   is_admin: { type: Boolean, required: false, default: false },
-  is_deleted: { type: Boolean, required: false, default: false }
+  is_deleted: { type: Boolean, required: false, default: false },
+  creator: { type: mongoose.Types.ObjectId, ref: 'Auth', required: true }
 });
 
 module.exports = mongoose.model('User', userSchema);
