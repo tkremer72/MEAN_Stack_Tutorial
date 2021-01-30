@@ -1,8 +1,11 @@
 import { Auth } from '../models/auth.model';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+
+const   BACKEND_URL = environment.authUrlApi;
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +57,7 @@ export class AuthService {
       user_email: user_email,
       user_password: user_password
     }
-    return this.http.post('http://localhost:3000/api/auths/registration', auth)
+    return this.http.post(BACKEND_URL + '/registration', auth)
     .subscribe(response => {
       //console.log(response);
       this.router.navigate(['/users-login']);
@@ -69,7 +72,7 @@ export class AuthService {
       user_email: user_email,
       user_password: user_password
     }
-    this.http.post<{ token: string, expiresIn: number, userId: string, is_admin: any, isAdmin: any }>('http://localhost:3000/api/auths/login', auth).subscribe(response => {
+    this.http.post<{ token: string, expiresIn: number, userId: string, is_admin: any, isAdmin: any }>(BACKEND_URL + '/login', auth).subscribe(response => {
     //  console.log(response);
     const token = response.token;
     this.token = token;
@@ -84,7 +87,7 @@ export class AuthService {
     this.authStatusListener.next(true);
     const now = new Date();
     const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-    console.log(expirationDate)
+    //console.log(expirationDate)
     this.saveAuthData(token, expirationDate, this.userId, this.is_admin, this.isAdmin)
     this.router.navigate(['/']);
     }

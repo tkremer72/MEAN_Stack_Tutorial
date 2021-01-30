@@ -1,9 +1,12 @@
 import { Blog } from '../../shared/models/blog.model';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+
+const BACKEND_URL = environment.blogUrlApi;
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +25,7 @@ export class BlogService {
 
   getAllBlogs(blogsPerPage: number, currentPage: number) {
     const queryParams = `?pagesize=${blogsPerPage}&page=${currentPage}`
-    this.http.get<{ message: string, blogs: any, maxBlogs: number }>('http://localhost:3000/api/blogs' + queryParams)
+    this.http.get<{ message: string, blogs: any, maxBlogs: number }>(BACKEND_URL + queryParams)
       .pipe(map((blogData) => {
         return {
           blogs: blogData.blogs.map((blog: { _id: any; title: any; content: any; author: any; date: any; imagePath: any; creator: any}) => {
@@ -88,7 +91,7 @@ export class BlogService {
       date: string,
       imagePath: string,
       creator: string
-    }>('http://localhost:3000/api/blogs/' + id);
+    }>(BACKEND_URL + '/' + id);
   }
 
   addBlog(title: string, content: string, author: string, date: string, image: File) {
@@ -105,7 +108,7 @@ export class BlogService {
     blogData.append("author", author);
     blogData.append("date", date);
     blogData.append("image", image, title);
-    this.http.post<{ message: string, blog: Blog }>('http://localhost:3000/api/blogs', blogData)
+    this.http.post<{ message: string, blog: Blog }>(BACKEND_URL, blogData)
       .subscribe(responseData => {
         //console.log(responseData.message);
         // const blog: Blog = {
@@ -154,7 +157,7 @@ export class BlogService {
         creator: null
       }
     }
-    this.http.put('http://localhost:3000/api/blogs/' + id, blogData)
+    this.http.put(BACKEND_URL + id, blogData)
       .subscribe(response => {
         //console.log(response);
         // const updatedBlogs = [...this.blogs];
@@ -175,7 +178,7 @@ export class BlogService {
   }
 
   deleteBlog(blogId: string) {
-   return this.http.delete('http://localhost:3000/api/blogs/' + blogId);
+   return this.http.delete(BACKEND_URL + '/' + blogId);
       // .subscribe(() => {
       //   //console.log("Deleted!")
       //   const updatedBlogs = this.blogs.filter(blog => blog.id !== blogId);

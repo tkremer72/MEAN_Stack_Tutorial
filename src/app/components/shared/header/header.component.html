@@ -6,13 +6,13 @@
 
   <ul>
     <li>
-      <a *ngIf="userIsAuthenticated" mat-button routerLink="/create-blog" routerLinkActive="mat-accent">New Blog</a>
+      <a *ngIf="userIsAuthenticated" mat-button routerLink="/users-create-blog" routerLinkActive="mat-accent">New Blog</a>
     </li>
     <li>
-      <a *ngIf="!userIsAuthenticated" mat-button routerLink="/users-login" routerLinkActive="mat-accent">Login</a>
+      <a *ngIf="!userIsAuthenticated" mat-button routerLink="/auth/users-login" routerLinkActive="mat-accent">Login</a>
     </li>
     <li>
-      <a *ngIf="!userIsAuthenticated" mat-button routerLink="/users-registration" routerLinkActive="mat-accent">Register</a>
+      <a *ngIf="!userIsAuthenticated" mat-button routerLink="/auth/users-registration" routerLinkActive="mat-accent">Register</a>
     </li>
     <li>
       <button *ngIf="userIsAuthenticated" mat-button (click)="onLogoutUser()">Logout</button>

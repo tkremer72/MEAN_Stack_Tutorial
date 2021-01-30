@@ -1,50 +1,31 @@
 const express = require('express');
-const multer = require('multer');
-const check = require("../middleware/verify-auth");
+
+const confirmAuth = require("../middleware/verify-auth");
+const getFile = require("../middleware/file");
+
 const blogsControl = require('../controllers/blogs.controller');
 
 const router = express.Router();
 
-//Configure the acceptable types of files
-const MIME_TYPE_MAP = {
-  'image/png': 'png',
-  'image/jpeg': 'jpg',
-  'image/jpg': 'jpg'
-};
-//Configure where and how multer stores uploaded files
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const isValid = MIME_TYPE_MAP[file.mimetype];
-    let error = new Error('Invalid mime type');
-    if(isValid) {
-      error = null;
-    }
-    cb(error, "backend/images");
-  },
-  filename: (req, file, cb) => {
-    const name = file.originalname.toLocaleLowerCase().split(' ').join('-');
-    const ext = MIME_TYPE_MAP[file.mimetype];
-    cb(null, name + '-' + Date.now() + '.' + ext);
-  }
-});
+
 
 //Create a blog
 router.post('',
-check,
-multer({ storage: storage }).single("image"),
+confirmAuth,
+getFile,
 blogsControl.create_blog);
 
 router.get('/:id', blogsControl.get_blog);
 
 router.get('', blogsControl.get_all_blogs);
 
-//router.get(check, 'users-blogs', blogsControl.get_users_blogs);
+//router.get(confirmAuth, 'users-blogs', blogsControl.get_users_blogs);
 
 router.put('/:id',
-check,
-multer({ storage: storage }).single("image"),
+confirmAuth,
+getFile,
 blogsControl.update_blog);
 
-router.delete('/:id', check, blogsControl.delete_blog);
+router.delete('/:id', confirmAuth, blogsControl.delete_blog);
 
 module.exports = router;

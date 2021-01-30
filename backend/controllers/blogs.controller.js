@@ -189,7 +189,7 @@ exports.update_blog = (req, res, next) => {
   Blog.updateOne({_id: req.params.id, creator: req.userData.userId }, blog)
   .then(result => {
     //console.log(result);
-    if(result.nModified > 0) {
+    if(result.n > 0) {
       res.status(200).json({
       message: 'Your blog update was successful!'
     });

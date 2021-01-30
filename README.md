@@ -131,6 +131,13 @@ I will add a route guard next. Reflecting the token expiration in the UI and sav
 Protecting the resources with authorization. Added the userData I want to use in the application to the decodedToken property within the verify.js file to check authentication. Restrict who can edit and delete a blog by checking if the user is the creator or not to show the buttons.
 Handling errors. stop the loading spinner when an error occurs and redirect the user.  Add a global error interceptor to handle errors globally. Adding error dialog and returning error messages on the server. 
 
+Creating an angular-material module and feature modules to split the application up some. Create a blogs module, and an auth module. 
+
+Implement lazy loading.  Even if the declarations are empty in the routing module, they must be included, you can't leave out the declarations array, empty or not.  Lazy loading is not implemented and both methods or ways work.  
+
+Implement global configuration using the environments on the angular frontend and useing the nodemon.json or global environments for the backend as well. 
+
+
 
 
 
