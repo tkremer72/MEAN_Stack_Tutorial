@@ -137,6 +137,26 @@ Implement lazy loading.  Even if the declarations are empty in the routing modul
 
 Implement global configuration using the environments on the angular frontend and useing the nodemon.json or global environments for the backend as well. 
 
+The next steps will be deployment, because of recent changes on the aws elastic beanstalk, I needed to create a Procfile in the root of the backend folder with the following line of code web: node server.js.  
+
+
+At this point because the author or instructor splits up this application for deployment, I am saving the original state by creating a copy of this tutorial application at this point.  Once that is done copying, I will name one copy original and one copy deployed so that I can tell the difference, once that is done I will continue. 
+
+The next steps will be deployment, because of recent changes on the aws elastic beanstalk, I needed to create a Procfile in the root of the backend folder with the following line of code web: node server.js.  
+
+moved server.js to from the frontend to the backend folder, changed the package.json file from nodemon server.js to nodemon ./backend/server.js and then changed the imports in the server.js file from ./backend/app to ./app in order to unbreak the broken app from moving the file.
+
+Copy the package.json file and paste it into the backend folder so that needed dependecies are in the backend.  Remove all of the scripts from the package.json and all of the angular related dependencies.  Also remove all of the development dependencies, they are only required by the angular CLI.
+
+For the two part deployment process, I can now deploy the backend api because it is ready for that.  I am going to follow the tutorial for this process using the aws deployment. For this process I will be using the elastic beanstalk method.  Click create new application, make sure web server environment is selected then click the orange select button, give the application a name, in this case I will call it mean-tutorial, for platform choose ManagedPlatform, select node.js and in the application code section, make sure that the upload your code option is selected.  On the computer, use explorer to navigate to the backend folder, zip the backend of the project up, to do this navigate into the backend, select all of the files and folders in there, cick the share tab, then select zip, name the zipped folder Archive.zip. Then from the aws elastic beanstalk console, click the choose file button and select that zip file.  Before clicking on create environment, choose the configure more options and set the evironment variables in the software section. Once you have the variables done, click save and then click on create environment. 
+
+In your mongo db database on atlas if you are not allowing connections from anywhere, which I am, then you need to add the ip address that was created in your elastic beanstalk application. 
+
+Now to deploy the angular app, starting by using the CLI to build the deployment version.  Before doing this I take the address of my elastic beanstalk backend and paste it into my environment.prod file instead of localhost.  Then I go to the angular.json file and change the output folder so that it develops the production build in the backend and not the frontend.  I will deploy the angular frontend to the aws s3. Start by clicking on create bucket.  First deployment works greate, next step deploy as one deployment instead of two.
+
+Integrated deployment.  Create a new environment, while I could have deployed this to the original tutorial environment as one app, I wanted to test it on a new one so I went through the steps that I did to set up the rest api but instead of deploying the backend only, I deployed the angular version of the backend under a new elastic beanstalk environment.  This deployment also works however there is an issue when the image file is too big, this issue causes a CORS policy error.  I have reached out to the instructor of the tutorial to better understand what this is about and if there is a resolution other than the obvious which would be to not use big images. Now I am going to copy the steps used for deployment and paste them in the original tutorial as well.  The next steps will be to go back through and add the profile page, allow the user to see all the posts on the list-blogs page, to see their posts and profile on the users-profile page, allow admin users to see all of the users in the database, delete those users, allow the normal users to create a user profile with an image upload type deal as well.  First things first though, copy these steps and paste them to the original. 
+
+
 
 
 

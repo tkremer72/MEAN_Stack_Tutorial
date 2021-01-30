@@ -57,7 +57,7 @@ export class AuthService {
       user_email: user_email,
       user_password: user_password
     }
-    return this.http.post(BACKEND_URL + '/registration', auth)
+    return this.http.post(BACKEND_URL + 'registration', auth)
     .subscribe(response => {
       //console.log(response);
       this.router.navigate(['/users-login']);
@@ -72,7 +72,9 @@ export class AuthService {
       user_email: user_email,
       user_password: user_password
     }
-    this.http.post<{ token: string, expiresIn: number, userId: string, is_admin: any, isAdmin: any }>(BACKEND_URL + '/login', auth).subscribe(response => {
+    this.http.post<{ token: string, expiresIn: number, userId: string, is_admin: any, isAdmin: any }>(
+      BACKEND_URL + 'login', auth
+      ).subscribe(response => {
     //  console.log(response);
     const token = response.token;
     this.token = token;

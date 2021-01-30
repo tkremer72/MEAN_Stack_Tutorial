@@ -44,7 +44,7 @@ exports.user_login = (req, res, next) => {
     }
     const token = jwt.sign(
     { user_email: fetchedUser.user_email, userId: fetchedUser._id },
-      'this_is_the_secret_key_this_should_be_very_long_this_should_never_be_given_to_anyone_ever_the_developer_is_the_only_person_who_should_ever_know_or_be_in_posession_of_this_secret_key',
+      process.env.JWT_KEY,
      { expiresIn: '1h' }
     );
     res.status(200).json({
