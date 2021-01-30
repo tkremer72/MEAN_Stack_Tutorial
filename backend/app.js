@@ -12,7 +12,7 @@ const userRoutes = require('./routes/users.routes')
 const app = express();
 //Connect to Mongo DB
 mongoose.connect(
-  `mongodb+srv://tbone7243:Daddykjune1!@cluster0.lebuw.mongodb.net/MEAN_Tutorial?retryWrites=true&w=majority`,
+  "mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PW + "@cluster0.lebuw.mongodb.net/" + process.env.MONGO_DB + "?retryWrites=true&w=majority",
   { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true }
 ).then(() => {
   console.log('Connected to Mongo DB!')
