@@ -14,8 +14,9 @@ const routes: Routes = [
   { path: 'users-create-blog', component: BlogCreateComponent, canActivate: [ AuthGuard ] },
   { path: 'users-edit-blog/:blogId', component: BlogCreateComponent, canActivate: [ AuthGuard ] },
   { path: 'admin-list-users', component: ListUsersComponent, canActivate: [ AuthGuard ] },
-  { path: 'users-profile', component: UserProfileComponent, canActivate: [ AuthGuard] },
+  { path: 'users-profile/:userId', component: UserProfileComponent, canActivate: [ AuthGuard] },
   { path: 'users-update-user/:userId', component: UpdateUserComponent, canActivate: [ AuthGuard] },
+  { path: 'users-create-profile', component: UpdateUserComponent, canActivate: [ AuthGuard ] },
   { path: 'auth', loadChildren: "./components/auth/auth.module#AuthModule"},
   //{ path: 'auth', loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule)}
 ];

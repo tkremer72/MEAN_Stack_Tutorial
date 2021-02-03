@@ -1,1 +1,101 @@
-<p>update-user works!</p>
+<h3>Please create your user profile to continue.</h3>
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<form [formGroup]="form" (submit)="onSaveUser()" *ngIf="!isLoading">
+
+  <div>
+    <!-- Hide the input picker from the DOM and simulate the picker with the button -->
+          <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+          <!-- Use CSS to hide the input below use a local reference to bind the file picker to the click event in the button-->
+          <input type="file" #filePicker (change)="onPickedImage($event)">
+
+        </div>
+
+        <div class="image-preview" *ngIf="imagePreview !== ' ' && imagePreview && form.get('image').valid">
+
+          <img [src]="imagePreview" [alt]="form.value.user_name">
+
+        </div>
+
+        <mat-form-field>
+          <input matInput type="text" formControlName="first_name" placeholder="First Name">
+
+          <mat-error *ngIf="form.get('first_name').invalid">Please enter a valid first name.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <input matInput type="text" formControlName="last_name" placeholder="Last Name">
+
+          <mat-error *ngIf="form.get('last_name').invalid">Please enter a valid last name.</mat-error>
+
+        </mat-form-field>
+        <mat-form-field class="email">
+          <input matInput type="email" formControlName="user_email" placeholder="Email">
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <input matInput type="text" formControlName="user_name" placeholder="Username">
+
+          <mat-error *ngIf="form.get('user_name').invalid">Please enter a valid username.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <input matInput type="text" formControlName="user_street" placeholder="Street address">
+
+          <mat-error *ngIf="form.get('user_street').invalid">Please enter a valid street address.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <input matInput type="text" formControlName="user_city" placeholder="City">
+
+          <mat-error *ngIf="form.get('user_city').invalid">Please enter a valid city name.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field color="accent" appearance="fill">
+          <mat-label>State</mat-label>
+          <mat-select formControlName="user_state" [(value)]="selectedState">
+            <mat-option></mat-option>
+            <mat-option [value]="option.value" *ngFor="let option of states">{{ option.viewValue }}</mat-option>
+          </mat-select>
+
+          <mat-error *ngIf="form.get('user_state').invalid">Please enter your state.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <input matInput type="text" formControlName="user_zip" placeholder="Zip code">
+
+          <mat-error *ngIf="form.get('user_zip').invalid">Please enter a valid zip code.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <input matInput type="text" formControlName="user_phone" placeholder="(919)999-9999">
+
+          <mat-error *ngIf="form.get('user_phone').invalid">Please enter a valid phone number.</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <input matInput type="text" formControlName="user_mobile" placeholder="(999)999-9999">
+
+          <mat-error *ngIf="form.get('user_mobile').invalid">Please enter a valid mobile number.</mat-error>
+
+        </mat-form-field>
+
+        <button color="accent" mat-raised-button type="submit">Save User</button>
+</form>
+</mat-card>

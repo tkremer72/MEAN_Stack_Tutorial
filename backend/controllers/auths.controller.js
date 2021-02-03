@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const Auth = require('../models/auth.model');
 
+//Create a user account
+
 exports.user_registration = (req, res, next) => {
   bcrypt.hash(req.body.user_password, 12)
     .then(hash => {
@@ -23,7 +25,7 @@ exports.user_registration = (req, res, next) => {
       });
     });
 }
-
+//Log a user in and return a token
 exports.user_login = (req, res, next) => {
   //Create a variable to store the user from the first then block so that we can move it into the second then block otherwise user does not exist
   let fetchedUser;

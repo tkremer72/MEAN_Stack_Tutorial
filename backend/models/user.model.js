@@ -13,6 +13,7 @@ const userSchema = mongoose.Schema({
   user_mobile: { type: String, required: true },
   is_admin: { type: Boolean, required: false, default: false },
   is_deleted: { type: Boolean, required: false, default: false },
+  imagePath: { type: String, required: true },
   creator: { type: mongoose.Types.ObjectId, ref: 'Auth', required: true }
 });
 

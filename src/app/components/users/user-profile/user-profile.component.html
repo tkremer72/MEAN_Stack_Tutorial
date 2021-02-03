@@ -1,1 +1,19 @@
-<p>user-profile works!</p>
+<mat-card *ngIf="user">
+
+  <h1>{{user.first_name}} {{user.last_name}} </h1>
+  <div class="user-image">
+    <img [src]="user.imagePath" [alt]="user.user_name">
+  </div>
+  <div class="paragraph">
+    <p>Username: {{user.user_name}} <br>
+      Email: {{user.user_email}} <br>
+      Street: {{user.user_street}} <br>
+      City: {{user.user_city}} <br>
+      State: {{user.user_state}},
+      Zip: {{ user.user_zip }} <br>
+      Phone: {{user.user_phone}}
+     </p>
+  </div>
+ <a mat-button color="primary" [routerLink]="['/users-update-user', user.creator]">EDIT</a>
+
+</mat-card>

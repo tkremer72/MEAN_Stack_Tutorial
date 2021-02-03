@@ -156,6 +156,8 @@ Now to deploy the angular app, starting by using the CLI to build the deployment
 
 Integrated deployment.  Create a new environment, while I could have deployed this to the original tutorial environment as one app, I wanted to test it on a new one so I went through the steps that I did to set up the rest api but instead of deploying the backend only, I deployed the angular version of the backend under a new elastic beanstalk environment.  This deployment also works however there is an issue when the image file is too big, this issue causes a CORS policy error.  I have reached out to the instructor of the tutorial to better understand what this is about and if there is a resolution other than the obvious which would be to not use big images. Now I am going to copy the steps used for deployment and paste them in the original tutorial as well.  The next steps will be to go back through and add the profile page, allow the user to see all the posts on the list-blogs page, to see their posts and profile on the users-profile page, allow admin users to see all of the users in the database, delete those users, allow the normal users to create a user profile with an image upload type deal as well.  First things first though, copy these steps and paste them to the original. 
 
+Add user and update user are done, I just need to work on the user profile page and the get user and users page along with the delete functionality of the buttons for those pages.  I need to possibly change the auth model to reflect a user id as well, we will see.  
+
 
 
 

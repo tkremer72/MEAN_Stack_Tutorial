@@ -157,7 +157,7 @@ export class BlogService {
         creator: null
       }
     }
-    this.http.put(BACKEND_URL + id, blogData)
+    this.http.put(BACKEND_URL + '/' + id, blogData)
       .subscribe(response => {
         //console.log(response);
         // const updatedBlogs = [...this.blogs];

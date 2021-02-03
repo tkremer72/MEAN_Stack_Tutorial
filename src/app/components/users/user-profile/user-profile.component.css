@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  margin: 1rem auto;
+}
+h1 {
+  text-align: center;
+}
+.user-image {
+  text-align: center;
+}
+.user-image img{
+  height: 125px;
+  width: auto;
+  border: 5px inset darkblue;
+  border-radius: 75px;
+}
